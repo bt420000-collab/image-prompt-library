@@ -4,7 +4,7 @@
 
 <p align="center">
   <b>作者：贝丝小草｜专注于解决问题的艺术</b><br/>
-  B站：<a href="https://space.bilibili.com/16826253">贝丝小草的使用教学与更新说明</a><br/>
+  B站：<a href="https://space.bilibili.com/16826253">使用教学与更新说明</a><br/>
   Product design, prompt curation and development assisted by ChatGPT.
 </p>
 
