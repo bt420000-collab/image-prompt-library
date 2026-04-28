@@ -12,6 +12,7 @@ export type CaseListItem = {
   prompt_style?: string;
   language_mode?: string;
   rewrite_status?: string;
+  tags?: string;
 };
 
 export type CaseImage = {
@@ -61,9 +62,11 @@ export type CaseDetail = {
 };
 
 export type MetaData = {
+  tags: { name: string; count: number }[];
+  funSubTags: { name: string; count: number }[];
   categories: { name: string; count: number }[];
   sources: { name: string; count: number }[];
   promptStyles: { name: string; count: number }[];
   languages: { name: string; count: number }[];
-  stats: { cases: number; images: number; builtin: number; user: number };
+  stats: { cases: number; images: number; builtin: number; user: number; tags: number };
 };

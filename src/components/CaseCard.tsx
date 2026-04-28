@@ -23,6 +23,9 @@ export function CaseCard({ item, onOpen }: Props) {
       <div className="case-info">
         <div className="case-title">{item.title}</div>
         <div className="case-meta">{item.category}</div>
+        <div className="case-tags">
+          {(item.tags || item.category || "").split("，").slice(0, 3).filter(Boolean).map((tag) => <span key={tag}>{tag}</span>)}
+        </div>
         <div className="case-foot">
           <span>{item.source === "builtin" ? "内置" : "我的"}</span>
           <span>{item.rewrite_status?.includes("optimized") || item.rewrite_status?.includes("normalized") ? "已优化" : "原始"}</span>

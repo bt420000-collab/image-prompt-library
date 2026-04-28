@@ -49,3 +49,16 @@ public/data/images/case346.jpg
 ```
 
 避免将第三方品牌名作为主产品名。项目可用于管理 GPT-Image、GPT-Image2、Seedream、ERNIE-Image、Midjourney、Stable Diffusion 等图像模型的提示词资产。
+
+
+## 软件作者
+
+```txt
+贝丝小草｜专注于解决问题的艺术
+```
+
+B站主页：
+
+```txt
+https://space.bilibili.com/16826253
+```

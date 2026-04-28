@@ -3,7 +3,7 @@ import cors from "cors";
 import path from "node:path";
 import fs from "node:fs";
 import { initDb } from "./db.js";
-import { importBuiltinCases, hasBuiltinCases } from "./services/importBuiltin.js";
+import { importBuiltinCases, hasBuiltinCases, ensureDefaultTags } from "./services/importBuiltin.js";
 import { casesRouter } from "./routes/cases.js";
 
 const app = express();
@@ -16,6 +16,7 @@ try {
     const result = importBuiltinCases();
     console.log("[seed]", result);
   }
+  console.log("[tags]", ensureDefaultTags());
 } catch (error) {
   console.warn("[seed skipped]", error instanceof Error ? error.message : error);
 }

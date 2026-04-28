@@ -14,13 +14,14 @@ export default function App() {
   const [items, setItems] = useState<CaseListItem[]>([]);
   const [meta, setMeta] = useState<MetaData>();
   const [q, setQ] = useState("");
-  const [category, setCategory] = useState("全部");
+  const [tag, setTag] = useState("全部");
+  const [funSubTag, setFunSubTag] = useState("全部");
   const [source, setSource] = useState("全部");
   const [promptStyle, setPromptStyle] = useState("全部");
   const [language, setLanguage] = useState("全部");
   const [loading, setLoading] = useState(false);
 
-  const queryParams = useMemo(() => ({ q, category, source, prompt_style: promptStyle, language_mode: language, limit: 160 }), [q, category, source, promptStyle, language]);
+  const queryParams = useMemo(() => ({ q, tag: tag === "趣味配方" && funSubTag !== "全部" ? funSubTag : tag, tag_group: tag === "趣味配方" && funSubTag === "全部" ? "fun" : undefined, source, prompt_style: promptStyle, language_mode: language, limit: 160 }), [q, tag, funSubTag, source, promptStyle, language]);
 
   async function reload() {
     setLoading(true);
@@ -45,12 +46,14 @@ export default function App() {
     <div className="app-shell">
       <Sidebar
         meta={meta}
-        category={category}
+        tag={tag}
+        funSubTag={funSubTag}
         source={source}
         promptStyle={promptStyle}
         language={language}
         onChange={(patch) => {
-          if (patch.category !== undefined) setCategory(patch.category);
+          if (patch.tag !== undefined) setTag(patch.tag);
+          if (patch.funSubTag !== undefined) setFunSubTag(patch.funSubTag);
           if (patch.source !== undefined) setSource(patch.source);
           if (patch.promptStyle !== undefined) setPromptStyle(patch.promptStyle);
           if (patch.language !== undefined) setLanguage(patch.language);
@@ -73,7 +76,7 @@ export default function App() {
             <p>{loading ? "正在整理抽屉..." : `当前显示 ${items.length} 个案例`}</p>
           </div>
           <div className="active-filters">
-            {[category, source, promptStyle, language].filter((x) => x && x !== "全部").map((x) => <span key={x}>{x}</span>)}
+            {[tag, funSubTag, source, promptStyle, language].filter((x) => x && x !== "全部").map((x) => <span key={x}>{x}</span>)}
           </div>
         </section>
 

@@ -1,6 +1,6 @@
 {
   "name": "image-prompt-library",
-  "version": "0.1.2",
+  "version": "0.2.6",
   "private": true,
   "description": "图像配方库：AI 图像提示词与样板图管理工具",
   "type": "module",
@@ -49,5 +49,10 @@
     "react",
     "typescript",
     "sqlite"
-  ]
+  ],
+  "author": {
+    "name": "贝丝小草｜专注于解决问题的艺术",
+    "url": "https://space.bilibili.com/16826253"
+  },
+  "homepage": "https://space.bilibili.com/16826253"
 }

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { db, nowIso } from "../db.js";
+import { normalizeImageTags } from "./tagService.js";
 
 type BuiltinCase = {
   id: number;
@@ -21,6 +22,23 @@ type BuiltinCase = {
   rewrite_status?: string;
   source_text?: string;
 };
+
+
+function tagNamesForItem(item: BuiltinCase) {
+  return normalizeImageTags([item.category_group, item.case_type_raw]);
+}
+
+function attachTags(caseId: number, tagNames: string[]) {
+  const clean = normalizeImageTags(tagNames);
+  const insertTag = db.prepare("INSERT OR IGNORE INTO tags (name) VALUES (?)");
+  const getTag = db.prepare("SELECT id FROM tags WHERE name = ?");
+  const link = db.prepare("INSERT OR IGNORE INTO case_tags (case_id, tag_id) VALUES (?, ?)");
+  for (const name of clean) {
+    insertTag.run(name);
+    const row = getTag.get(name) as { id: number } | undefined;
+    if (row) link.run(caseId, row.id);
+  }
+}
 
 function safeTitle(item: BuiltinCase) {
   const name = (item.name || "").trim();
@@ -105,9 +123,43 @@ export function importBuiltinCases({ overwrite = false } = {}) {
         rewrite_status: item.rewrite_status || "",
         created_at: createdAt
       });
+      attachTags(caseId, tagNamesForItem(item));
     }
   });
 
   tx();
   return { imported: items.length, skipped: false };
+}
+
+
+export function ensureDefaultTags() {
+  const rows = db.prepare(`
+    SELECT c.id, c.category, c.description
+    FROM cases c
+  `).all() as Array<{ id: number; category?: string; description?: string }>;
+
+  const clear = db.prepare("DELETE FROM case_tags WHERE case_id = ?");
+  const currentTags = db.prepare(`
+    SELECT t.name
+    FROM tags t
+    JOIN case_tags ct ON ct.tag_id = t.id
+    WHERE ct.case_id = ?
+    ORDER BY t.name
+  `);
+
+  const tx = db.transaction(() => {
+    for (const row of rows) {
+      const existing = (currentTags.all(row.id) as Array<{ name: string }>).map((x) => x.name);
+      const normalized = normalizeImageTags([...existing, row.category || "", row.description || ""]);
+      clear.run(row.id);
+      attachTags(row.id, normalized);
+    }
+  });
+
+  tx();
+
+  db.prepare("DELETE FROM tags WHERE id NOT IN (SELECT DISTINCT tag_id FROM case_tags)").run();
+
+  const count = db.prepare("SELECT COUNT(*) AS count FROM tags").get() as { count: number };
+  return { updated: rows.length, tags: count.count };
 }
