@@ -8,11 +8,11 @@
 > Product design, prompt curation and development assisted by ChatGPT.
 
 <p align="center">
-  <img src="./屏幕截图 2026-07-01 151114.png" alt="图像配方库案例展柜主界面" width="92%" />
+  <img src="./docs/screenshots/image-prompt-library-gallery.png" alt="图像配方库案例展柜主界面" width="92%" />
 </p>
 
 <p align="center">
-  <img src="./屏幕截图 2026-07-01 151206.png" alt="图像配方库大画布与生成面板" width="92%" />
+  <img src="./docs/screenshots/image-prompt-library-canvas-generate.png" alt="图像配方库大画布与生成面板" width="92%" />
 </p>
 
 ## 项目定位
